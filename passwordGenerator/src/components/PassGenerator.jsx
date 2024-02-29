@@ -19,6 +19,11 @@ export const PassGenerator = () => {
         setPassword(pass)
     }
 
+    const handleLengthChange = (e) => {
+        const newLength = parseInt(e.target.value);
+        setLength(newLength);
+    };
+
     const copyPasswordToClipboard = () => {
         passwordRef.current?.select();
         passwordRef.current?.setSelectionRange(0, 999);
@@ -44,8 +49,18 @@ export const PassGenerator = () => {
                             className='cursor-pointer'
                             onChange={(e) => { setLength(e.target.value) }}
                         />
-                        <label>Length: {length}</label>
                     </div>
+                    <div>
+                        <input
+                            type="number"
+                            value={length}
+                            min={6}
+                            max={100}
+                            className='outline-none w-20 py-2 px-4 bg-gray-800 text-white border border-black rounded-lg shadow-md focus:ring-2 focus:ring-blue-500'
+                            onChange={handleLengthChange}
+                        />
+                    </div>
+                    <label>Length</label>
                 </div>
                 <div>
                     <label htmlFor="characterInput" className="text-white mr-2">Characters</label>
