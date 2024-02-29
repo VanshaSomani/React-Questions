@@ -1,29 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 export const PassGenerator = () => {
     const [password, setPassword] = useState("");
     const [length, setLength] = useState(8)
     const [numbersAllowed, setNumbersAllowed] = useState(false)
     const [charAllowed, setCharAllowed] = useState(false)
+    const passwordRef = useRef(null)
 
-    const passwordGenerator = (() => {
-
-    },[])
+    const passwordGenerator = useCallback(() => {
+        let pass = "";
+        let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        if (numbersAllowed) str += "0123456789";
+        if (charAllowed) str += "!@#$%^&*-_+=[]{}~`";
+        for (let i = 1; i <= length; i++) {
+            let char = Math.floor(Math.random() * str.length + 1)
+            pass += str.charAt(char)
+        }
+        setPassword(pass)
+    },[length, numbersAllowed, charAllowed, setPassword])
 
     const copyPasswordToClipboard = () => {
-
+        passwordRef.current?.select();
+        passwordRef.current?.setSelectionRange(0, 999);
+        window.navigator.clipboard.writeText(password)
     }
 
     useEffect(() => {
-      
-    }, [])
-    
+        passwordGenerator();
+    }, [length, numbersAllowed, charAllowed])
 
     return (
         <div className="w-full max-w-sm p-4 bg-black border border-gray-200 rounded-lg shadow-lg sm:p-6 md:p-8 dark:bg-gray-900 dark:border-gray-700 flex flex-col items-center">
             <form className="space-y-6" action="#">
                 <h5 className="text-3xl text-gery-400 font-bold shadow-outline">Password Generator</h5>
-                <input type='password' value={password} className='outline-none w-full py-2 px-4 bg-gray-800 text-white border border-black rounded-lg shadow-md focus:ring-2 focus:ring-blue-500' placeholder='Password' readOnly />
+                <input type='text' value={password} className='outline-none w-full py-2 px-4 bg-gray-800 text-white border border-black rounded-lg shadow-md focus:ring-2 focus:ring-blue-500' placeholder='Password' readOnly ref={passwordRef} />
                 <div className='flex items-center justify-center text-sm gap-x-2'>
                     <div className='flex items-center gap-x-1'>
                         <input
