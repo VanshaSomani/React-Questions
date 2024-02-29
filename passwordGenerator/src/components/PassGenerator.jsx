@@ -7,7 +7,7 @@ export const PassGenerator = () => {
     const [charAllowed, setCharAllowed] = useState(false)
     const passwordRef = useRef(null)
 
-    const passwordGenerator = useCallback(() => {
+    const passwordGenerator = () => {
         let pass = "";
         let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         if (numbersAllowed) str += "0123456789";
@@ -17,7 +17,7 @@ export const PassGenerator = () => {
             pass += str.charAt(char)
         }
         setPassword(pass)
-    },[length, numbersAllowed, charAllowed, setPassword])
+    }
 
     const copyPasswordToClipboard = () => {
         passwordRef.current?.select();
